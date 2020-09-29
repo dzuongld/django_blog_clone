@@ -1,0 +1,63 @@
+{% extends 'blog/base.html' %}
+
+
+{% block content %}
+<h1 class="posttitle wrapper">{{ post.title }}</h1>
+
+{% if post.published_date %}
+<div class="date postdate">
+    {{ post.published_date }}
+</div>
+{% else %}
+<a
+    href="{% url 'publish_post' pk=post.pk %}"
+    class="btn btn-default"
+>Publish</a>
+{% endif %}
+
+{% comment %} translate html to expectation {% endcomment %}
+<p class="postcontent">{{ post.title | safe | linebreaksbr }}</p>
+
+
+{% if user.is_authenticated %}
+<a href="{% url 'post_edit' pk=post.pk %}">Edit</a>
+<a href="{% url 'post_delete' pk=post.pk %}">Delete</a>
+{% endif %}
+
+<hr>
+
+<a
+    href="{% url 'add_comment_to_post' pk=post.pk %}"
+    class="btn btn-primary btn-comment"
+>Add Comment</a>
+
+<div class="container">
+
+    {% for comment in post.comments.all %}
+    <br>
+
+    {% if user.is_authenticated or comment.approved_comment %}
+    {{ comment.created_date }}
+    {% if not comment.approved_comment %}
+    <a
+        href="{% url 'remove_comment' pk=comment.pk %}"
+        class="btn btn-default"
+    >Delete</a>
+    <a
+        href="{% url 'approve_comment' pk=comment.pk %}"
+        class="btn btn-primary"
+    >Approve</a>
+    {% endif %}
+
+    <p>{{ comment.text | safe | linebreaks }}</p>
+    <p>Posted By: {{ comment.author }}</p>
+
+    {% endif %}
+
+    {% empty %}
+    <p>No Comments</p>
+
+    {% endfor %}
+
+</div>
+{% endblock content %}

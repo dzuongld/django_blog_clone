@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+{% load static %}
+
 <html lang="en">
 
 <head>
@@ -7,10 +10,123 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
-    <title>Document</title>
+    <title>Blog</title>
+
+    {% comment %} Bootstrap {% endcomment %}
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+        crossorigin="anonymous"
+    />
+    <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"
+    ></script>
+
+    {% comment %} Medium-styled Editor {% endcomment %}
+    <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+    <link
+        rel="stylesheet"
+        href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css"
+        type="text/css"
+        media="screen"
+        charset="utf-8"
+    >
+
+    {% comment %} Custom CSS {% endcomment %}
+    <link
+        rel="stylesheet"
+        href="{% static "css/blog.css" %}"
+    >
+
+    {% comment %} Fonts {% endcomment %}
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat|Roboto&display=swap"
+        rel="stylesheet"
+    >
 </head>
 
 <body>
+    {% comment %} Navbar {% endcomment %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light techfont">
+        <div class="container">
+            <a
+                class="navbar-brand"
+                href="{% url 'post_list' %}"
+            >My Blog</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+                class="collapse navbar-collapse"
+                id="navbarNavDropdown"
+            >
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="{% url 'about' %}"
+                        >About</a>
+                    </li>
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="{% url 'post_new' %}"
+                        >New Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="{% url 'post_draft_list' %}"
+                        >Drafts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="{% url 'logout' %}"
+                        >Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        Welcome {{user.username}}
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            href="{% url 'logout' %}"
+                        >Login</a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% comment %} Content {% endcomment %}
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="blog_posts">
+                    {% block content %}
+
+                    {% endblock content %}
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 

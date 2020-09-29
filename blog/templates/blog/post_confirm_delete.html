@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+
+
+{% block content %}
+
+<h1>Delete {{ object }}?</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input
+        class="btn btn-danger"
+        type="submit"
+        value="Confirm"
+    >
+</form>
+
+<a href="{% url 'app:detail' pk=model_detail.pk %}">Cancel</a>
+
+{% endblock content %}
