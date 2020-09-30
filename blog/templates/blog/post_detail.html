@@ -11,12 +11,12 @@
 {% else %}
 <a
     href="{% url 'publish_post' pk=post.pk %}"
-    class="btn btn-default"
+    class="btn btn-secondary"
 >Publish</a>
 {% endif %}
 
 {% comment %} translate html to expectation {% endcomment %}
-<p class="postcontent">{{ post.title | safe | linebreaksbr }}</p>
+<p class="postcontent">{{ post.text | safe | linebreaksbr }}</p>
 
 
 {% if user.is_authenticated %}
